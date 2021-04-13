@@ -11,6 +11,10 @@
   (layout/render
     request "home.html" {:messages (db/get-messages)}))
 
+(defn save-message! [{:keys [params]}]
+  (db/save-message! params)
+  (response/found "/"))
+
 ;(defn home-page [request]
 ;  (layout/render
 ;    request "home.html" {:docs (-> "docs/docs.md" io/resource slurp)}))
@@ -23,5 +27,6 @@
    {:middleware [middleware/wrap-csrf
                  middleware/wrap-formats]}
    ["/" {:get home-page}]
+   ["/message" {:post save-message!}]
    ["/about" {:get about-page}]])
 
